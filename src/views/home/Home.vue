@@ -683,7 +683,7 @@ onMounted(() => {
 
 /* 表单标签 */
 .create-dialog .el-form-item__label {
-  color: rgba(255, 255, 255, 0.9);
+  color: white !important;
   font-weight: 500;
 }
 
