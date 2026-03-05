@@ -10,7 +10,9 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 
 // 引入 Phosphor Icons 图标库样式
-import '@phosphor-icons/web/css'
+import '@phosphor-icons/web/regular'
+import '@phosphor-icons/web/fill'
+import '@phosphor-icons/web/bold'
 
 // 引入 Element Plus 中文语言包，确保组件显示为中文
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
