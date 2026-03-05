@@ -656,14 +656,15 @@ onMounted(() => {
 
 /* 对话框标题 */
 .create-dialog .el-dialog__header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 20px 24px !important;
+  background: transparent !important;
 }
 
 .create-dialog .el-dialog__title {
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
+  color: white !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
 }
 
 /* 关闭按钮 */
@@ -678,7 +679,8 @@ onMounted(() => {
 
 /* 对话框内容 */
 .create-dialog .el-dialog__body {
-  padding: 24px;
+  padding: 24px !important;
+  background: transparent !important;
 }
 
 /* 表单标签 */
@@ -805,8 +807,9 @@ onMounted(() => {
 
 /* 对话框底部 */
 .create-dialog .el-dialog__footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 16px 24px !important;
+  background: transparent !important;
 }
 
 /* 按钮 */
