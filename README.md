@@ -5,17 +5,17 @@ Author: Kuroneko
 ## 项目简介
 
 这是一个基于 Vue 3 + TypeScript + Vite 构建的现代化生物信息学分析中台前端项目。
-采用卡通风格设计，配合炫酷的粒子特效和生信元素动画，为用户提供极致的视觉体验。
+采用现代卡通风格设计，配合炫酷的粒子特效和 DNA/蛋白质结构动画，为用户提供极致的视觉体验。
 
 ## 技术栈
 
-- **框架**: Vue 3 (Composition API)
+- **框架**: Vue 3 (Composition API + setup 语法糖)
 - **语言**: TypeScript
 - **构建工具**: Vite
 - **UI 组件库**: Element Plus
 - **路由**: Vue Router
 - **HTTP 客户端**: Axios
-- **特效库**: tsparticles (粒子特效)
+- **粒子特效**: @tsparticles/vue3
 
 ## 快速开始
 
@@ -37,43 +37,27 @@ npm run dev
 
 访问 `http://localhost:5173` 即可看到炫酷的登录页面。
 
-## 初始化新项目（从零开始）
+**默认账号**：`admin`  
+**默认密码**：`admin`
 
-### 第一步：创建 Vite + Vue 3 + TypeScript 项目
+## 项目特色
 
-```bash
-# 使用 Vite 创建项目
-npm create vite@latest bioagent-ui -- --template vue-ts
+### 视觉设计亮点
 
-# 进入项目目录
-cd bioagent-ui
-```
+1. **粒子特效背景**：使用 tsparticles 实现 80 个荧光色粒子向上漂浮
+2. **DNA 双螺旋动画**：SVG 图形配合 CSS 动画，在左上角缓缓旋转漂浮
+3. **蛋白质结构动画**：SVG 图形在右下角执行反向旋转漂浮
+4. **Glassmorphism 设计**：磨砂玻璃质感的登录卡片，半透明背景 + 模糊效果
+5. **高饱和度配色**：深蓝到紫色的渐变背景，搭配荧光色粒子
+6. **流畅交互动画**：按钮悬浮放大、输入框聚焦发光、卡片入场动画
 
-### 第二步：安装核心依赖
+### 技术特色
 
-```bash
-# 安装 Vue Router（路由管理）
-npm install vue-router@4
-
-# 安装 Axios（HTTP 请求库）
-npm install axios
-
-# 安装 Element Plus（UI 组件库）
-npm install element-plus
-
-# 安装 Element Plus 图标库
-npm install @element-plus/icons-vue
-
-# 安装 tsparticles（粒子特效库）
-npm install tsparticles-engine tsparticles-vue3 tsparticles-slim
-```
-
-### 第三步：安装开发依赖（可选但推荐）
-
-```bash
-# 安装 TypeScript 类型定义
-npm install --save-dev @types/node
-```
+1. **Vue 3 Composition API**：使用最新的 setup 语法糖
+2. **TypeScript 严格模式**：完整的类型定义和类型安全
+3. **模块化架构**：清晰的目录结构，易于维护和扩展
+4. **统一的网络请求封装**：自动处理 token、错误提示
+5. **详细的代码注释**：每段逻辑都有中文注释，适合学习
 
 ## 项目目录结构
 
@@ -82,17 +66,17 @@ bioagent-ui/
 ├── public/                          # 静态资源目录
 ├── src/                             # 源代码目录
 │   ├── router/                      # 路由配置目录
-│   │   └── index.ts                 # 路由主配置文件（已完成）
+│   │   └── index.ts                 # 路由主配置文件
 │   ├── utils/                       # 工具函数目录
-│   │   └── request.ts               # Axios 封装（已完成）
+│   │   └── request.ts               # Axios 封装
 │   ├── views/                       # 页面视图目录
 │   │   ├── login/                   # 登录模块
-│   │   │   └── Login.vue            # 登录页面（已完成）
+│   │   │   └── Login.vue            # 登录页面（粒子特效 + DNA/蛋白质动画）
 │   │   └── home/                    # 首页模块
-│   │       └── Home.vue             # 首页占位组件（已完成）
-│   ├── App.vue                      # 根组件（已完成）
-│   ├── main.ts                      # 应用入口文件（已完成）
-│   ├── style.css                    # 默认样式文件
+│   │       └── Home.vue             # 首页占位组件
+│   ├── App.vue                      # 根组件
+│   ├── main.ts                      # 应用入口文件
+│   ├── style.css                    # 全局样式文件
 │   └── vite-env.d.ts                # Vite 环境类型声明
 ├── index.html                       # HTML 入口文件
 ├── package.json                     # 项目依赖配置
@@ -100,17 +84,6 @@ bioagent-ui/
 ├── vite.config.ts                   # Vite 配置文件
 └── README.md                        # 项目说明文档（本文件）
 ```
-
-## 已完成的功能模块
-
-### 核心文件清单
-
-1. **src/main.ts** - 应用入口，已配置 Element Plus 和 Vue Router
-2. **src/App.vue** - 根组件，全屏路由容器
-3. **src/router/index.ts** - 路由配置，包含登录页和首页
-4. **src/utils/request.ts** - Axios 网络请求封装
-5. **src/views/login/Login.vue** - 炫酷登录页（粒子特效 + 生信元素动画）
-6. **src/views/home/Home.vue** - 首页占位组件
 
 ## 核心功能详解
 
@@ -133,14 +106,17 @@ import request from '@/utils/request'
 const data = await request.get('/api/user/info')
 
 // POST 请求
-const result = await request.post('/api/login', { username: 'admin', password: 'admin' })
+const result = await request.post('/api/login', { 
+  username: 'admin', 
+  password: 'admin' 
+})
 ```
 
 ### 2. 路由配置 (src/router/index.ts)
 
 **当前路由**：
-- `/` - 根路径，自动重定向到 `/home`
-- `/login` - 登录页面（炫酷粒子特效 + 生信元素动画）
+- `/` - 根路径，自动重定向到 `/login`
+- `/login` - 登录页面（粒子特效 + DNA/蛋白质动画）
 - `/home` - 首页（当前为占位页面，后续开发项目列表功能）
 
 **路由守卫**：
@@ -157,16 +133,15 @@ const result = await request.post('/api/login', { username: 'admin', password: '
 - tsparticles 粒子特效：80 个荧光色粒子缓慢向上漂浮
 - 粒子颜色：青色、紫色、绿色、黄色（高饱和度）
 
-**生信元素动画**：
-- **DNA 双螺旋**（左上角）：
-  - 使用内联 SVG 绘制双螺旋结构
-  - 青色和紫色的螺旋链，绿色的连接横杠
-  - 执行 8 秒循环的浮动旋转动画（上下浮动 30px + 360 度旋转）
-  
-- **蛋白质三维结构**（右下角）：
-  - 使用 SVG 绘制多个彩色圆球和连接线
-  - 模拟蛋白质的空间结构
-  - 执行 10 秒循环的反向浮动旋转动画
+**DNA 双螺旋动画**（左上角）：
+- 使用内联 SVG 绘制双螺旋结构
+- 青色和紫色的螺旋链，绿色的连接横杠
+- 执行 8 秒循环的浮动旋转动画（上下浮动 30px + 360 度旋转）
+
+**蛋白质三维结构动画**（右下角）：
+- 使用 SVG 绘制多个彩色圆球和连接线
+- 模拟蛋白质的空间结构
+- 执行 10 秒循环的反向浮动旋转动画
 
 **登录卡片**（Glassmorphism 设计）：
 - 宽度 450px，大圆角（30px）
@@ -235,6 +210,34 @@ npm run build
 npm run preview
 ```
 
+## 依赖安装说明
+
+### 核心依赖
+
+```bash
+# Vue Router（路由管理）
+npm install vue-router@4
+
+# Axios（HTTP 请求库）
+npm install axios
+
+# Element Plus（UI 组件库）
+npm install element-plus
+
+# Element Plus 图标库
+npm install @element-plus/icons-vue
+
+# tsparticles（粒子特效库）
+npm install @tsparticles/vue3 @tsparticles/slim @tsparticles/engine
+```
+
+### 开发依赖
+
+```bash
+# TypeScript 类型定义
+npm install --save-dev @types/node
+```
+
 ## Git 版本管理
 
 ### 初始化 Git 仓库并推送到 GitHub
@@ -269,46 +272,12 @@ git commit -m "feat: 添加新功能"
 git push
 ```
 
-## 设计规范
-
-### 代码规范
-
-1. **禁止使用 Emoji 和特殊符号**：代码和注释中严禁出现任何 Emoji 或装饰性符号
-2. **作者标注**：每个代码文件顶部必须包含 `Author: Kuroneko` 注释
-3. **详细注释**：每段逻辑都有详细的中文注释，方便初学者理解
-4. **TypeScript 严格模式**：充分利用类型系统，避免 any 类型
-
-### UI 设计风格
-
-- **色彩**：高饱和度、明快的配色方案
-- **形状**：圆角设计、轻微阴影
-- **动画**：流畅的过渡效果和交互反馈
-- **主题**：现代卡通风 + 生物信息学科技感
-
-## 项目特色
-
-### 视觉设计亮点
-
-1. **现代卡通风格**：高饱和度配色、大圆角、发光阴影
-2. **Glassmorphism 设计**：磨砂玻璃质感的登录卡片
-3. **粒子特效**：80 个荧光色粒子缓慢向上漂浮
-4. **生信主题动画**：DNA 双螺旋和蛋白质结构的 3D 旋转漂浮效果
-5. **流畅交互**：按钮悬浮放大、输入框聚焦发光、卡片入场动画
-
-### 技术特色
-
-1. **Vue 3 Composition API**：使用最新的 setup 语法糖
-2. **TypeScript 严格模式**：完整的类型定义和类型安全
-3. **模块化架构**：清晰的目录结构，易于扩展
-4. **统一的网络请求封装**：自动处理 token、错误提示
-5. **详细的代码注释**：每段逻辑都有中文注释，适合学习
-
 ## 后续开发计划
 
 - [ ] 完善首页布局和项目列表功能
 - [ ] 接入真实的后端登录接口
 - [ ] 添加用户权限管理和路由守卫
-- [ ] 开发生物信息学分析工具模块
+- [ ] 开发生物信息学分析工具模块（GWAS、AlphaFold 等）
 - [ ] 添加数据可视化图表（ECharts）
 - [ ] 实现暗色/亮色主题切换
 - [ ] 添加响应式布局，支持移动端
@@ -317,7 +286,7 @@ git push
 
 1. **后端服务**：确保后端服务运行在 `http://localhost:8080`
 2. **登录功能**：当前为模拟实现（1.5 秒延迟），后续需要对接真实 API
-3. **性能优化**：粒子特效可能影响低端设备性能，可在 Login.vue 中调整粒子数量（particlesOptions.particles.number.value）
+3. **性能优化**：粒子特效可能影响低端设备性能，可在 Login.vue 中调整粒子数量
 4. **浏览器兼容**：建议使用 Chrome、Edge、Firefox 等现代浏览器
 5. **代码规范**：严格禁止在代码和注释中使用 Emoji 和特殊符号
 
@@ -327,7 +296,13 @@ git push
 
 检查是否正确安装了 tsparticles 相关依赖：
 ```bash
-npm install tsparticles-engine tsparticles-vue3 tsparticles-slim
+npm install @tsparticles/vue3 @tsparticles/slim @tsparticles/engine
+```
+
+确保在 `main.ts` 中注册了 Particles 组件：
+```typescript
+import Particles from '@tsparticles/vue3'
+app.use(Particles)
 ```
 
 ### 2. Element Plus 样式丢失？
@@ -337,9 +312,29 @@ npm install tsparticles-engine tsparticles-vue3 tsparticles-slim
 import 'element-plus/dist/index.css'
 ```
 
-### 3. 路由跳转不生效？
+### 3. Element Plus 中文语言包导入错误？
+
+使用正确的导入路径：
+```typescript
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+```
+
+### 4. 路由跳转不生效？
 
 检查 router/index.ts 是否正确配置，并在 main.ts 中注册了路由。
+
+### 5. 粒子特效性能问题？
+
+可以在 Login.vue 中减少粒子数量（当前为 80）：
+```typescript
+number: {
+  value: 40,  // 减少到 40 个粒子
+  density: {
+    enable: true,
+    area: 800
+  }
+}
+```
 
 ## 贡献指南
 
@@ -350,6 +345,7 @@ import 'element-plus/dist/index.css'
 2. 所有文件顶部包含 `Author: Kuroneko` 注释
 3. 代码有详细的中文注释
 4. 没有使用 Emoji 和特殊符号
+5. 通过 TypeScript 类型检查
 
 ## 开源协议
 
@@ -360,5 +356,5 @@ MIT License
 **Author: Kuroneko**  
 **创建日期**: 2026-03-05  
 **最后更新**: 2026-03-05  
-**项目版本**: v1.0.0  
+**项目版本**: v1.0.1  
 **GitHub**: https://github.com/zzz-sudo/bioagent-ui
