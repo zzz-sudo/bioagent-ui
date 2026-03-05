@@ -638,30 +638,35 @@ onMounted(() => {
 
 <style>
 /* 全局样式：覆盖 Element Plus 对话框样式 */
+/* 使用更强的选择器优先级 */
 
 /* 对话框遮罩层 */
 .el-overlay {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.7) !important;
   backdrop-filter: blur(8px);
 }
 
-/* 对话框容器：深色毛玻璃风格 */
-.create-dialog .el-dialog {
+/* 对话框容器：深色毛玻璃风格 - 使用多重选择器提高优先级 */
+.el-dialog.create-dialog,
+.create-dialog .el-dialog,
+div.el-dialog {
   background: rgba(15, 23, 42, 0.95) !important;
-  backdrop-filter: blur(30px);
+  backdrop-filter: blur(30px) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-radius: 20px !important;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* 对话框标题 */
-.create-dialog .el-dialog__header {
+.create-dialog .el-dialog__header,
+.el-dialog__header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
   padding: 20px 24px !important;
   background: transparent !important;
 }
 
-.create-dialog .el-dialog__title {
+.create-dialog .el-dialog__title,
+.el-dialog__title {
   color: white !important;
   font-size: 20px !important;
   font-weight: bold !important;
