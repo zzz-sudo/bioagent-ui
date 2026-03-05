@@ -387,7 +387,7 @@ const initSnow = () => {
 
 /**
  * 处理登录逻辑
- * 设置加载状态，延迟 1.5 秒后跳转到首页
+ * 设置加载状态，延迟 1.5 秒后跳转到课题大厅
  */
 const handleLogin = () => {
   // 设置加载状态为 true
@@ -398,8 +398,8 @@ const handleLogin = () => {
     // 重置加载状态
     isLoginLoading.value = false
     
-    // 跳转到首页
-    router.push('/')
+    // 跳转到课题大厅
+    router.push('/home')
   }, 1500)
 }
 
