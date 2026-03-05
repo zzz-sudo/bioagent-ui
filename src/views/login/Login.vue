@@ -191,8 +191,8 @@ const initThree = () => {
   renderer.setClearColor(0x000000, 0) // 透明背景
   container.appendChild(renderer.domElement)
 
-  // 创建 8 个蛋白质分子结构
-  for (let i = 0; i < 8; i++) {
+  // 创建 11 个蛋白质分子结构
+  for (let i = 0; i < 11; i++) {
     // 每个蛋白质由一组小球体组成
     const proteinGroup = new THREE.Group()
     
@@ -207,11 +207,14 @@ const initThree = () => {
     ]
     const baseColor = colors[Math.floor(Math.random() * colors.length)]
     
+    // 随机缩放比例：0.6 到 1.4 倍
+    const scale = 0.6 + Math.random() * 0.8
+    
     // 创建蛋白质的主链结构（螺旋状）
     const atomCount = 15 + Math.floor(Math.random() * 10) // 15-25 个原子
     for (let j = 0; j < atomCount; j++) {
-      // 创建小球体代表原子
-      const atomGeometry = new THREE.SphereGeometry(0.3, 16, 16)
+      // 创建小球体代表原子，大小根据缩放比例调整
+      const atomGeometry = new THREE.SphereGeometry(0.3 * scale, 16, 16)
       const atomMaterial = new THREE.MeshPhongMaterial({
         color: baseColor,
         transparent: true,
@@ -222,11 +225,11 @@ const initThree = () => {
       })
       const atom = new THREE.Mesh(atomGeometry, atomMaterial)
       
-      // 螺旋排列原子位置
+      // 螺旋排列原子位置，根据缩放比例调整
       const angle = (j / atomCount) * Math.PI * 4 // 两圈螺旋
-      const radius = 2
+      const radius = 2 * scale
       atom.position.x = Math.cos(angle) * radius
-      atom.position.y = j * 0.5 - atomCount * 0.25 // 垂直分布
+      atom.position.y = j * 0.5 * scale - atomCount * 0.25 * scale // 垂直分布
       atom.position.z = Math.sin(angle) * radius
       
       proteinGroup.add(atom)
