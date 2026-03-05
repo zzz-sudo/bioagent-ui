@@ -165,8 +165,8 @@ let snowCtx: CanvasRenderingContext2D | null = null
 let snowParticles: Array<{ x: number; y: number; radius: number; speed: number; opacity: number }> = []
 
 /**
- * 初始化 Three.js 3D 蛋白质动画
- * 创建多个半透明球体模拟蛋白质分子，并添加缓慢旋转和浮动效果
+ * 初始化 Three.js 3D 蛋白质结构动画
+ * 创建多个蛋白质分子结构，每个由多个小球体连接而成，模拟真实的蛋白质结构
  */
 const initThree = () => {
   // 获取 Three.js 容器 DOM 元素
@@ -183,7 +183,7 @@ const initThree = () => {
     0.1,
     1000
   )
-  camera.position.z = 30 // 相机位置：向后移动 30 个单位
+  camera.position.z = 50 // 相机位置：向后移动 50 个单位
 
   // 创建 WebGL 渲染器，启用透明背景和抗锯齿
   renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
@@ -191,51 +191,106 @@ const initThree = () => {
   renderer.setClearColor(0x000000, 0) // 透明背景
   container.appendChild(renderer.domElement)
 
-  // 创建 15 个蛋白质球体，随机分布在 3D 空间中
-  for (let i = 0; i < 15; i++) {
-    // 创建球体几何体：半径在 0.8 到 2.5 之间随机
-    const geometry = new THREE.SphereGeometry(Math.random() * 1.5 + 0.8, 32, 32)
+  // 创建 8 个蛋白质分子结构
+  for (let i = 0; i < 8; i++) {
+    // 每个蛋白质由一组小球体组成
+    const proteinGroup = new THREE.Group()
     
-    // 创建材质：半透明，带有发光效果
-    const material = new THREE.MeshPhongMaterial({
-      color: new THREE.Color().setHSL(Math.random(), 0.7, 0.6), // 随机色相，高饱和度
-      transparent: true,
-      opacity: 0.4, // 半透明
-      emissive: new THREE.Color().setHSL(Math.random(), 0.5, 0.3), // 自发光
-      shininess: 100
-    })
+    // 随机选择蛋白质颜色（生物学常用颜色）
+    const colors = [
+      0x00d4ff, // 青色
+      0xff6b9d, // 粉色
+      0x00ff88, // 绿色
+      0xffeb3b, // 黄色
+      0xc77dff, // 紫色
+      0xff6b6b  // 红色
+    ]
+    const baseColor = colors[Math.floor(Math.random() * colors.length)]
     
-    // 创建网格对象
-    const protein = new THREE.Mesh(geometry, material)
+    // 创建蛋白质的主链结构（螺旋状）
+    const atomCount = 15 + Math.floor(Math.random() * 10) // 15-25 个原子
+    for (let j = 0; j < atomCount; j++) {
+      // 创建小球体代表原子
+      const atomGeometry = new THREE.SphereGeometry(0.3, 16, 16)
+      const atomMaterial = new THREE.MeshPhongMaterial({
+        color: baseColor,
+        transparent: true,
+        opacity: 0.8,
+        emissive: baseColor,
+        emissiveIntensity: 0.3,
+        shininess: 100
+      })
+      const atom = new THREE.Mesh(atomGeometry, atomMaterial)
+      
+      // 螺旋排列原子位置
+      const angle = (j / atomCount) * Math.PI * 4 // 两圈螺旋
+      const radius = 2
+      atom.position.x = Math.cos(angle) * radius
+      atom.position.y = j * 0.5 - atomCount * 0.25 // 垂直分布
+      atom.position.z = Math.sin(angle) * radius
+      
+      proteinGroup.add(atom)
+      
+      // 如果不是第一个原子，创建连接线
+      if (j > 0) {
+        const prevAtom = proteinGroup.children[j - 1]
+        const points = [
+          new THREE.Vector3(prevAtom.position.x, prevAtom.position.y, prevAtom.position.z),
+          new THREE.Vector3(atom.position.x, atom.position.y, atom.position.z)
+        ]
+        const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
+        const lineMaterial = new THREE.LineBasicMaterial({
+          color: baseColor,
+          transparent: true,
+          opacity: 0.4
+        })
+        const line = new THREE.Line(lineGeometry, lineMaterial)
+        proteinGroup.add(line)
+      }
+    }
     
-    // 随机位置：在 -25 到 25 的范围内
-    protein.position.x = (Math.random() - 0.5) * 50
-    protein.position.y = (Math.random() - 0.5) * 50
-    protein.position.z = (Math.random() - 0.5) * 50
+    // 随机位置分布蛋白质
+    proteinGroup.position.x = (Math.random() - 0.5) * 60
+    proteinGroup.position.y = (Math.random() - 0.5) * 40
+    proteinGroup.position.z = (Math.random() - 0.5) * 40
     
-    // 添加到场景和数组中
-    scene.add(protein)
-    proteins.push(protein)
+    // 随机初始旋转
+    proteinGroup.rotation.x = Math.random() * Math.PI
+    proteinGroup.rotation.y = Math.random() * Math.PI
+    proteinGroup.rotation.z = Math.random() * Math.PI
+    
+    scene.add(proteinGroup)
+    proteins.push(proteinGroup)
   }
 
   // 添加环境光：柔和的整体照明
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6)
   scene.add(ambientLight)
 
-  // 添加点光源：模拟主光源
-  const pointLight = new THREE.PointLight(0xffffff, 1, 100)
-  pointLight.position.set(10, 10, 10)
-  scene.add(pointLight)
+  // 添加多个点光源，增强立体感
+  const pointLight1 = new THREE.PointLight(0x00d4ff, 1, 100)
+  pointLight1.position.set(20, 20, 20)
+  scene.add(pointLight1)
+  
+  const pointLight2 = new THREE.PointLight(0xff6b9d, 0.8, 100)
+  pointLight2.position.set(-20, -20, 20)
+  scene.add(pointLight2)
 
   // 动画循环函数
   const animate = () => {
     threeAnimationFrameId = requestAnimationFrame(animate)
 
-    // 让每个蛋白质球体缓慢旋转和浮动
+    // 让每个蛋白质结构缓慢旋转和浮动
     proteins.forEach((protein, index) => {
-      protein.rotation.x += 0.001 * (index % 2 === 0 ? 1 : -1)
-      protein.rotation.y += 0.002 * (index % 3 === 0 ? 1 : -1)
-      protein.position.y += Math.sin(Date.now() * 0.001 + index) * 0.01
+      // 旋转动画
+      protein.rotation.x += 0.002 * (index % 2 === 0 ? 1 : -1)
+      protein.rotation.y += 0.003 * (index % 3 === 0 ? 1 : -1)
+      protein.rotation.z += 0.001
+      
+      // 浮动动画
+      const time = Date.now() * 0.0005
+      protein.position.y += Math.sin(time + index) * 0.02
+      protein.position.x += Math.cos(time + index * 0.5) * 0.01
     })
 
     // 渲染场景
