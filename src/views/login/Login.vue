@@ -8,7 +8,7 @@
     <div id="three-container" class="absolute inset-0 z-0"></div>
     
     <!-- Canvas 粒子雪花效果 -->
-    <canvas id="snow-canvas" class="absolute inset-0 z-1 pointer-events-none"></canvas>
+    <canvas id="snow-canvas" class="absolute inset-0 pointer-events-none" style="z-index: 1;"></canvas>
     
     <!-- 登录表单层：z-10 确保在背景之上 -->
     <div class="absolute inset-0 z-10 flex w-full h-full">
