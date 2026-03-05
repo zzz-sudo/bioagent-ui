@@ -764,6 +764,31 @@ onMounted(() => {
   color: white;
 }
 
+/* 下拉选择框的下拉菜单 */
+.el-select-dropdown {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.el-select-dropdown .el-select-dropdown__item {
+  color: rgba(255, 255, 255, 0.9);
+  background: transparent;
+}
+
+.el-select-dropdown .el-select-dropdown__item:hover {
+  background: rgba(59, 130, 246, 0.2);
+  color: white;
+}
+
+.el-select-dropdown .el-select-dropdown__item.is-selected {
+  background: rgba(59, 130, 246, 0.3);
+  color: white;
+  font-weight: 600;
+}
+
 /* 单选按钮 */
 .create-dialog .el-radio__label {
   color: rgba(255, 255, 255, 0.9);
