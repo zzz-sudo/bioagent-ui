@@ -110,12 +110,8 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { loadSlim } from 'tsparticles-slim'
-import type { Engine } from 'tsparticles-engine'
-
-// 引入粒子组件
-// @ts-ignore
-import Particles from 'tsparticles-vue3'
+import { loadSlim } from '@tsparticles/slim'
+import type { Engine } from '@tsparticles/engine'
 
 // 获取路由实例，用于页面跳转
 const router = useRouter()

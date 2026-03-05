@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioNexus AI - 纯净版登录页</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* 基础样式：深色背景，隐藏溢出防止滚动条出现 */
+        body { font-family: 'Inter', sans-serif; overflow: hidden; background-color: #0f172a; color: white; }
+        
+        /* 流金文字特效：通过背景渐变和动画实现 */
+        .golden-text {
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            background-size: 200% auto; animation: shine 4s linear infinite;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+
+        /* 磨砂玻璃面板：半透明背景加高斯模糊，带有一点白色边框反光 */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 轮播文字动画：淡入淡出加轻微垂直位移 */
+        .text-fade-enter-active, .text-fade-leave-active { transition: opacity 0.8s ease, transform 0.8s ease; position: absolute; width: 100%; }
+        .text-fade-enter-from { opacity: 0; transform: translateY(10px); }
+        .text-fade-leave-to { opacity: 0; transform: translateY(-10px); }
+    </style>
+</head>
+<body>
+
+<div id="app" class="relative w-full h-screen bg-[#0f172a]">
+    
+    <div id="three-container" class="absolute inset-0 z-0"></div>
+    
+    <canvas id="snow-canvas" class="absolute inset-0 z-1 pointer-events-none"></canvas>
+
+    <div class="absolute inset-0 z-10 flex w-full h-full">
+        
+        <div class="hidden lg:flex flex-col justify-center w-1/2 px-16 h-full bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-transparent">
+            <div class="mb-12">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="p-3 bg-blue-600/20 rounded-xl border border-blue-500/30 backdrop-blur-sm">
+                        <i class="ph-fill ph-dna text-5xl text-blue-400"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-5xl font-bold tracking-wider font-mono text-white">BioNexus</h1>
+                    </div>
+                </div>
+                <div class="h-1.5 w-32 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full"></div>
+            </div>
+            
+            <div class="h-48 relative w-full max-w-xl">
+                <transition-group name="text-fade">
+                    <div v-if="currentSloganIndex === 0" key="0" class="absolute top-0 left-0 w-full">
+                        <h2 class="text-5xl font-extrabold mb-6 leading-tight golden-text">
+                            Decoding Life<br>with Intelligence
+                        </h2>
+                        <p class="text-xl text-gray-300 font-light leading-relaxed">
+                            融合深度学习与生物信息学，从 GWAS 到 AlphaFold，一站式解决复杂生物计算难题。
+                        </p>
+                    </div>
+                    <div v-if="currentSloganIndex === 1" key="1" class="absolute top-0 left-0 w-full">
+                        <h2 class="text-5xl font-extrabold mb-6 leading-tight golden-text">
+                            Protein Design<br>Revolution
+                        </h2>
+                        <p class="text-xl text-gray-300 font-light leading-relaxed">
+                            利用生成式 AI 进行蛋白质从头设计与结构预测，加速新药研发周期。
+                        </p>
+                    </div>
+                </transition-group>
+            </div>
+
+            <div class="mt-24 flex gap-8 text-sm text-gray-400 font-mono">
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700">
+                    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                    <span>GPU Cluster: Online</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full lg:w-1/2 flex items-center justify-center p-6 relative">
+            <div class="glass-panel w-full max-w-[440px] h-[550px] rounded-2xl p-8 relative overflow-hidden flex flex-col shadow-2xl">
+                
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold tracking-tight text-white">用户登录</h2>
+                </div>
+
+                <div class="flex-1 flex flex-col">
+                    <div class="flex border-b border-gray-700 mb-6">
+                        <button class="text-white border-b-2 border-blue-500 pb-3 px-4 text-sm font-medium transition-all">密码登录</button>
+                    </div>
+
+                    <div class="space-y-5">
+                        <div class="group relative">
+                            <i class="ph ph-user absolute left-3 top-3.5 text-gray-400 text-lg"></i>
+                            <input type="text" v-model="loginForm.username" placeholder="用户名 / 邮箱" class="w-full bg-slate-900/50 border border-gray-600 rounded-lg py-3 pl-10 pr-4 outline-none focus:border-blue-500 text-sm transition-colors text-white placeholder-gray-500 focus:bg-slate-900">
+                        </div>
+                        <div class="group relative">
+                            <i class="ph ph-lock-key absolute left-3 top-3.5 text-gray-400 text-lg"></i>
+                            <input type="password" v-model="loginForm.password" placeholder="密码" class="w-full bg-slate-900/50 border border-gray-600 rounded-lg py-3 pl-10 pr-4 outline-none focus:border-blue-500 text-sm transition-colors text-white placeholder-gray-500 focus:bg-slate-900">
+                        </div>
+                    </div>
+
+                    <div class="mt-10">
+                        <button @click="handleLogin" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3.5 rounded-lg shadow-lg shadow-blue-500/20 transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
+                            <i v-if="isLoginLoading" class="ph-bold ph-spinner animate-spin"></i>
+                            {{ isLoginLoading ? '正在建立安全连接...' : '进入控制台' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const { createApp, ref, reactive, onMounted } = Vue;
+
+    createApp({
+        setup() {
+            // 表单状态定义，默认值为 admin
+            const loginForm = reactive({ username: 'admin', password: 'admin' });
+            const isLoginLoading = ref(false);
+            const currentSloganIndex = ref(0);
+
+            // 登录处理函数
+            const handleLogin = () => { 
+                isLoginLoading.value = true; 
+                setTimeout(() => { 
+                    isLoginLoading.value = false; 
+                    alert('登录成功！准备跳转到首页...'); 
+                }, 1500); 
+            };
+
+            // 初始化 Three.js 蛋白质 3D 漂浮动画
+            const initThree = () => {
+                const container = document.getElementById('three-container');
+                if(!container) return;
+                
+                const scene = new THREE.Scene(); 
+                scene.fog = new THREE.FogExp2(0x0f172a, 0.0035);
+
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({alpha:true, antialias:true});
+                renderer.setSize(window.innerWidth, window.innerHeight); 
+                container.appendChild(renderer.domElement);
+                
+                // 辅助函数：生成 3D 蛋白质球棍模型
+                const createComplexProtein = (colorBase, position, scale = 1, atomCount = 120) => {
+                    const group = new THREE.Group();
+                    const geometry = new THREE.IcosahedronGeometry(0.3 * scale, 1);
+                    const bondGeo = new THREE.CylinderGeometry(0.08 * scale, 0.08 * scale, 1, 6);
+                    
+                    let currentPos = new THREE.Vector3(0,0,0);
+                    const positions = [currentPos];
+
+                    for(let i=0; i<atomCount; i++) {
+                        const color = new THREE.Color(colorBase).offsetHSL(Math.random()*0.1 - 0.05, 0, 0);
+                        const material = new THREE.MeshPhongMaterial({color: color, shininess: 80});
+                        const atom = new THREE.Mesh(geometry, material);
+                        
+                        const direction = new THREE.Vector3(Math.random()-0.5, Math.random()-0.5, Math.random()-0.5).normalize();
+                        const nextPos = currentPos.clone().add(direction.multiplyScalar(0.8 * scale));
+                        
+                        atom.position.copy(nextPos);
+                        group.add(atom);
+
+                        if (i > 0) {
+                            const bondLength = currentPos.distanceTo(nextPos);
+                            const bond = new THREE.Mesh(bondGeo, new THREE.MeshPhongMaterial({color: 0x475569}));
+                            const mid = currentPos.clone().add(nextPos).multiplyScalar(0.5);
+                            bond.position.copy(mid);
+                            bond.lookAt(nextPos);
+                            bond.rotateX(Math.PI/2);
+                            bond.scale.set(1, bondLength, 1);
+                            group.add(bond);
+                        }
+                        currentPos = nextPos;
+                        positions.push(currentPos);
+                    }
+                    
+                    const box = new THREE.Box3().setFromObject(group);
+                    const center = box.getCenter(new THREE.Vector3());
+                    group.position.sub(center).add(new THREE.Vector3(...position));
+                    
+                    return group;
+                };
+
+                // 创建场景中的不同蛋白质体
+                const receptor = createComplexProtein(0x3b82f6, [-3.5, 0, 0], 1.2, 180);
+                const ligand = createComplexProtein(0xf59e0b, [3.5, 2, 0], 0.9, 80);
+                const enzyme = createComplexProtein(0x10b981, [0, -3.5, 2], 0.6, 60);
+
+                scene.add(receptor);
+                scene.add(ligand);
+                scene.add(enzyme);
+
+                // 设置灯光
+                scene.add(new THREE.AmbientLight(0x1e293b, 3));
+                const mainLight = new THREE.PointLight(0xffffff, 2, 50);
+                mainLight.position.set(10, 10, 10);
+                scene.add(mainLight);
+                const blueLight = new THREE.PointLight(0x3b82f6, 4, 50);
+                blueLight.position.set(-10, -5, 5);
+                scene.add(blueLight);
+
+                camera.position.z = 14;
+
+                // 动画循环
+                let time = 0;
+                const animate = () => {
+                    requestAnimationFrame(animate); 
+                    time += 0.005;
+
+                    receptor.rotation.y += 0.001;
+                    receptor.rotation.x += 0.0005;
+                    
+                    ligand.rotation.y -= 0.002;
+                    ligand.rotation.x -= 0.001;
+                    ligand.position.y = Math.sin(time * 0.8) * 3 + 1; 
+                    ligand.position.x = 3.5 + Math.cos(time * 0.6) * 2; 
+
+                    enzyme.rotation.y += 0.003;
+                    enzyme.position.x = Math.sin(time * 0.5) * 6; 
+                    enzyme.position.y = -3.5 + Math.cos(time * 0.5) * 2;
+
+                    scene.rotation.z = Math.sin(time * 0.2) * 0.02;
+
+                    renderer.render(scene, camera);
+                };
+                animate();
+
+                // 监听窗口大小变化
+                window.addEventListener('resize', () => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                });
+            };
+
+            // 初始化 Canvas 粒子雪花特效
+            const initSnow = () => {
+                const canvas = document.getElementById('snow-canvas'); 
+                const ctx = canvas.getContext('2d');
+                let w = window.innerWidth, h = window.innerHeight; 
+                canvas.width = w; canvas.height = h;
+                
+                const particles = Array.from({length: 400}, () => ({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: Math.random() * 1.5 + 0.5,
+                    d: Math.random() * 0.8 + 0.2, 
+                    opacity: Math.random() * 0.5 + 0.1 
+                }));
+
+                const draw = () => {
+                    ctx.clearRect(0,0,w,h); 
+                    particles.forEach(p => {
+                        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                        ctx.fill();
+                        
+                        p.y += p.d;
+                        p.x += Math.sin(p.y * 0.01) * 0.2; 
+                        
+                        if(p.y > h) {
+                            p.y = 0;
+                            p.x = Math.random() * w;
+                        }
+                    });
+                    requestAnimationFrame(draw);
+                }; 
+                draw();
+                
+                window.addEventListener('resize', () => {
+                    w = window.innerWidth;
+                    h = window.innerHeight;
+                    canvas.width = w;
+                    canvas.height = h;
+                });
+            };
+
+            onMounted(() => { 
+                initSnow(); 
+                initThree(); 
+                // 轮播文字定时器
+                setInterval(() => {
+                    currentSloganIndex.value = (currentSloganIndex.value + 1) % 2;
+                }, 4000); 
+            });
+            
+            return { 
+                loginForm, isLoginLoading, currentSloganIndex, handleLogin
+            };
+        }
+    }).mount('#app');
+</script>
+</body>
+</html>
