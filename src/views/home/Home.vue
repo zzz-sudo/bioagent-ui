@@ -647,11 +647,11 @@ onMounted(() => {
 
 /* 对话框容器：深色毛玻璃风格 */
 .create-dialog .el-dialog {
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(15, 23, 42, 0.95) !important;
   backdrop-filter: blur(30px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* 对话框标题 */
