@@ -689,103 +689,103 @@ onMounted(() => {
 
 /* 输入框 */
 .create-dialog .el-input__wrapper {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
 }
 
 .create-dialog .el-input__wrapper:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .create-dialog .el-input__wrapper.is-focus {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
 }
 
 .create-dialog .el-input__inner {
-  color: white;
+  color: white !important;
 }
 
 .create-dialog .el-input__inner::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.4) !important;
 }
 
 /* 文本域 */
 .create-dialog .el-textarea__inner {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  color: white;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 10px !important;
+  color: white !important;
 }
 
 .create-dialog .el-textarea__inner::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.4) !important;
 }
 
 .create-dialog .el-textarea__inner:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .create-dialog .el-textarea__inner:focus {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
 }
 
 /* 下拉选择框 */
 .create-dialog .el-select__wrapper {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
 }
 
 .create-dialog .el-select__wrapper:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .create-dialog .el-select__wrapper.is-focused {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
 }
 
 .create-dialog .el-select__placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.4) !important;
 }
 
 .create-dialog .el-select__selected-item {
-  color: white;
+  color: white !important;
 }
 
 /* 下拉选择框的下拉菜单 */
 .el-select-dropdown {
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(15, 23, 42, 0.95) !important;
   backdrop-filter: blur(30px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
 }
 
 .el-select-dropdown .el-select-dropdown__item {
-  color: rgba(255, 255, 255, 0.9);
-  background: transparent;
+  color: rgba(255, 255, 255, 0.9) !important;
+  background: transparent !important;
 }
 
 .el-select-dropdown .el-select-dropdown__item:hover {
-  background: rgba(59, 130, 246, 0.2);
-  color: white;
+  background: rgba(59, 130, 246, 0.2) !important;
+  color: white !important;
 }
 
 .el-select-dropdown .el-select-dropdown__item.is-selected {
-  background: rgba(59, 130, 246, 0.3);
-  color: white;
+  background: rgba(59, 130, 246, 0.3) !important;
+  color: white !important;
   font-weight: 600;
 }
 
