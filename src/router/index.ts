@@ -7,7 +7,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/home'  // 根路径重定向到首页
+    redirect: '/login'  // 根路径重定向到登录页
   },
   {
     path: '/login',
